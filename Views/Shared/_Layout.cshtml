@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NP Book Rental</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+    <header>
+        @await Html.PartialAsync("_StaffMenu.cshtml")
+    </header>
+    <!-- Bootstrap container, centralise the container between margins -->
+    <div class="container">
+        <!-- 1st row -->
+        <div class="row">
+            <div class="col-sm-12">
+                <p style="padding:2px 15px;">
+                    Welcome,&nbsp;
+                </p>
+            </div>
+        </div>
+        <!-- 2nd row -->
+        <div class="row">
+            <div class="col-sm-12">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <footer class="border-top small text-right text-muted">
+        <p style="padding-right:15px; padding-top: 5px">
+            WEB Practical Exercises - &copy;@DateTime.Today.Year
+            School of ICT, Ngee Ann Polytechnic
+        </p>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>
