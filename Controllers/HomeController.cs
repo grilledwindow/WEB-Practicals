@@ -45,14 +45,38 @@ namespace Web_S10203108.Controllers
 
             if (loginID == "abc@npbook.com" && password == "pass1234")
             {
+                DateTime loginTime = DateTime.Now;
+                TempData["LoginTime"] = loginTime.ToString("dd-MMM-yy HH:mm:ss tt");
+                TempData["LoggedIn"] = true;
+                HttpContext.Session.SetString("LoginTime", loginTime.ToString("dd-MMM-yy HH:mm:ss tt"));
+                HttpContext.Session.SetString("LoginID", loginID);
+                HttpContext.Session.SetString("Role", "Staff");
+
                 // Redirect user to the "StaffMain" view through an action
                 return RedirectToAction("StaffMain");
             }
             else
             {
+                // Temp data is used to pass info from one action to another
+                TempData["Message"] = "Invalid Login Credentials!";
+
                 // Redirect user back to the index view through an action
                 return RedirectToAction("Index");
             }
+        }
+
+        public ActionResult LogOut()
+        {
+            DateTime loginTime = DateTime.Parse(HttpContext.Session.GetString("LoginTime").ToString());
+            TempData["LoggedIn"] = false;
+            ViewData["LoginDuration"] = ((DateTime.Now - loginTime).TotalSeconds).ToString();
+
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+            TempData["LoginDuration"] = ((DateTime.Now - loginTime).TotalSeconds).ToString();
+
+            // Call the Index action of Home controller
+            return RedirectToAction("Index");
         }
         public ActionResult StaffMain()
         {

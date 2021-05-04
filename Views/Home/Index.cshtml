@@ -3,6 +3,7 @@
 }
 <!DOCTYPE html>
 <html>
+
 <head>
     <!-- Use Unicode character encoding - multi-language compatibity -->
     <meta charset="utf-8">
@@ -13,6 +14,7 @@
     <!-- Reference to customized styling for this website -->
     <link rel="stylesheet" type="text/css" href="~/css/Site.css">
 </head>
+
 <body>
     <div class="container" id="mainContainer">
         <!-- 1st row -->
@@ -27,14 +29,13 @@
                     <fieldset class="loginFieldset">
                         <legend>Staff Login</legend>
                         <label for="txtLoginID">Login ID:</label>
-                        <input type="email" name="txtLoginID"
-                               id="txtLoginID" required /><br />
+                        <input type="email" name="txtLoginID" id="txtLoginID" required /><br />
                         <label for="txtPassword">Password:</label>
-                        <input type="password" name="txtPassword"
-                               id="txtPassword" style="width:100px"
-                               required />
-                        <input type="submit" id="btnStaffLogin"
-                               class="myButton" value="Login" />
+                        <input type="password" name="txtPassword" id="txtPassword" style="width:100px" required />
+                        <input type="submit" id="btnStaffLogin" class="myButton" value="Login" />
+
+                        <br />
+                        <span style="color:red;">@TempData["Message"]</span>
                     </fieldset>
                 </form>
             </div>
@@ -48,15 +49,22 @@
                 </fieldset>
             </div>
         </div>
+
+        @if ((bool)TempData.ContainsKey("LoggedIn") && !(bool)TempData["LoggedIn"] && (bool)TempData.ContainsKey("LoginDuration"))
+        {
+            <div style="text-align: center;">
+                <span>You have logged in for @Math.Round(Double.Parse(TempData["LoginDuration"].ToString())) seconds</span>
+            </div>
+        }
         <!-- 2nd row -->
         <div>
             <div style="text-align: center;">
                 <p>
-                    <img id="imgLogo" src="~/images/logo.jpg"
-                         style="width: 100%" />
+                    <img id="imgLogo" src="~/images/logo.jpg" style="width: 100%" />
                 </p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

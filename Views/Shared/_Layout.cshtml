@@ -11,15 +11,28 @@
 
 <body>
     <header>
-        @await Html.PartialAsync("_StaffMenu.cshtml")
-    </header>
+    @if (Context.Session.GetString("Role") != null)
+    {
+        if (Context.Session.GetString("Role") == "Staff")
+        {
+            @await Html.PartialAsync("_StaffMenu.cshtml")
+        }
+    }
+ </header>
     <!-- Bootstrap container, centralise the container between margins -->
     <div class="container">
         <!-- 1st row -->
         <div class="row">
             <div class="col-sm-12">
                 <p style="padding:2px 15px;">
-                    Welcome,&nbsp;
+                    @{
+                        string timeLoggedIn = Context.Session.GetString("LoginTime");
+                        string userId = Context.Session.GetString("LoginID") ?? "Anonymous";
+                        string userRole = Context.Session.GetString("Role") ?? "Unknown";
+                    }
+                    Welcome,
+                    <span style="font-weight:bold">@userId</span>
+                    (Role: @userRole). You have logged in since @timeLoggedIn;
                 </p>
             </div>
         </div>
