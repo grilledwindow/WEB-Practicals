@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web_S10203108.Models;
 
-namespace web_s1234567.Controllers
+namespace Web_S10203108.Controllers
 {
     public class RentalController : Controller
     {
