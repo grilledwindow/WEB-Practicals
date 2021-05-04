@@ -1,0 +1,88 @@
+@model Web_S10203108.Models.Fine
+@{
+    ViewData["Title"] = "Fine Calculator";
+}
+<h4 class="PageTitle">Fine Calculator</h4>
+<hr />
+<form asp-controller="Fine" asp-action="Calculate" method="post">
+    <fieldset class="FormContent">
+        <legend>Input Data:</legend>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label asp-for="DueDate" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 col-md-4">
+                <input asp-for="DueDate" class="form-control" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="NumDaysOverdue" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="NumDaysOverdue" readonly class="form-control-plaintext" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="FineRate" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8">
+                <input asp-for="FineRate" class="form-control" />
+                <span asp-validation-for="FineRate" class="text-danger"></span><br />
+                <span style="font-style:italic;">
+                    (rate per day for the 1st book,
+                    double for the 2nd, triple for the 3rd ...)
+                </span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="NumBooksOverdue" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 col-md-4">
+                <input asp-for="NumBooksOverdue" class="form-control" required />
+                <span asp-validation-for="NumBooksOverdue" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-8 offset-sm-4">
+                <input type="submit" value="Compute" class="btn btn-primary" />
+            </div>
+        </div>
+    </fieldset>
+</form>
+@if (Convert.ToBoolean(ViewData["ShowResult"]))
+{
+    <fieldset class="FormContent">
+        <legend>Result:</legend>
+        <div class="form-group row">
+            <label asp-for="FineAmt" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.Display("FineAmt")
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">
+                Breakdown of the Fine</label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.Raw(ViewData["FineBreakdown"])
+            </div>
+        </div>
+    </fieldset>
+}
+<script>
+    // Calculate and display the days overdue when the due date is set
+    document.getElementById("DueDate").onchange = function () {
+        // The number of milliseconds in one day
+        var oneday = 24 * 60 * 60 * 1000;
+        var today = new Date();
+        var dueDate = new Date(document.getElementById("DueDate").value);
+
+        // Convert both dates to milliseconds
+        var today_ms = today.getTime();
+        var dueDate_ms = dueDate.getTime();
+
+        // Calculate the difference in milliseconds
+        var difference_ms = today_ms - dueDate_ms;
+        
+        // Convert back to days
+        var numDaysOverdue = Math.floor(difference_ms / oneday);
+        
+        // Assign the value to input field
+        document.getElementById("NumDaysOverdue").value = numDaysOverdue;
+    };
+</script>
