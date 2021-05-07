@@ -16,7 +16,7 @@ namespace Web_S10203108.Models
 
         [Display(Name = "Fine Rate (SGD)")]
         [DisplayFormat(DataFormatString = "{0:#,##0.00}", ApplyFormatInEditMode = true)]
-        [Range(0, 99, ErrorMessage = "Invalid value! Please enter a value from 0 to 99")]
+        [Range(0, 99.0, ErrorMessage = "Invalid value! Please enter a value from 0 to 99")]
         public double FineRate { get; set; }
 
         [Display(Name = "Number of Books Overdue")]
