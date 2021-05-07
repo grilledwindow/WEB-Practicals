@@ -45,10 +45,9 @@ namespace Web_S10203108.Controllers
 
             if (loginID == "abc@npbook.com" && password == "pass1234")
             {
-                DateTime loginTime = DateTime.Now;
-                TempData["LoginTime"] = loginTime.ToString("dd-MMM-yy HH:mm:ss tt");
-                TempData["LoggedIn"] = true;
-                HttpContext.Session.SetString("LoginTime", loginTime.ToString("dd-MMM-yy HH:mm:ss tt"));
+                String loginTime = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss tt");
+                TempData["LoginTime"] = loginTime;
+                HttpContext.Session.SetString("LoginTime", loginTime);
                 HttpContext.Session.SetString("LoginID", loginID);
                 HttpContext.Session.SetString("Role", "Staff");
 
@@ -68,8 +67,6 @@ namespace Web_S10203108.Controllers
         public ActionResult LogOut()
         {
             DateTime loginTime = DateTime.Parse(HttpContext.Session.GetString("LoginTime").ToString());
-            TempData["LoggedIn"] = false;
-            ViewData["LoginDuration"] = ((DateTime.Now - loginTime).TotalSeconds).ToString();
 
             // Clear all key-values pairs stored in session state
             HttpContext.Session.Clear();

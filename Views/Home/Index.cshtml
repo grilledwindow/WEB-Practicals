@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        @if ((bool)TempData.ContainsKey("LoggedIn") && !(bool)TempData["LoggedIn"] && (bool)TempData.ContainsKey("LoginDuration"))
+        @if (TempData.ContainsKey("LoginDuration"))
         {
             <div style="text-align: center;">
                 <span>You have logged in for @Math.Round(Double.Parse(TempData["LoginDuration"].ToString())) seconds</span>
