@@ -8,7 +8,7 @@ namespace Web_S10203108.Controllers
     {
         public ActionResult Calculate()
         {
-            //Prepare the ViewData to be use in Calculate.cshtml view
+            // Prepare the ViewData to be use in Calculate.cshtml view
             ViewData["ShowResult"] = false;
             Fine fine = new Fine();
             fine.DueDate = DateTime.Today;

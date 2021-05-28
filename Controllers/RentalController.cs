@@ -22,7 +22,7 @@ namespace Web_S10203108.Controllers
         // Constructor for the RentalController
         public RentalController()
         {
-            //Populate the selection list for drop-down list
+            // Populate the selection list for drop-down list
             for (int i = 1; i <= 10; i++)
             {
                 numBooks.Add(
@@ -33,7 +33,7 @@ namespace Web_S10203108.Controllers
                     }
                 );
             }
-            //Populate the selection list for checkboxes list
+            // Populate the selection list for checkboxes list
             discountList.Add(
                 new RentalDiscount
                 {
@@ -63,7 +63,7 @@ namespace Web_S10203108.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            //Prepare the ViewData to be used in Calculate.cshtml view
+            // Prepare the ViewData to be used in Calculate.cshtml view
             ViewData["ShowResult"] = false;
             ViewData["NumBooks"] = numBooks;
             ViewData["NumDays"] = numLoanDays;
