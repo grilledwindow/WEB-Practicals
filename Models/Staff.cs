@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Web_S10203108.Models
@@ -21,11 +20,13 @@ namespace Web_S10203108.Models
 
         public string Nationality { get; set; }
 
-
         [Display(Name = "Email Address")]
+        [EmailAddress] // Validation Annotation for email address format
+        // Custom Validation Attribute for checking email address exists
+        [ValidateEmailExists]
         public string Email { get; set; }
 
-
+        [Required]
         [Display(Name = "Monthly Salary (SGD)")]
         [DisplayFormat(DataFormatString = "{0:#,##0.00}")]
         [Range(1.00, 10000.00, ErrorMessage = "Salary must be range from 1.00 to 10000.00")]
