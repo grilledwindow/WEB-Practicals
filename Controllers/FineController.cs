@@ -22,7 +22,6 @@ namespace Web_S10203108.Controllers
             // The fine object contains user inputs from view
             if (!ModelState.IsValid) // validation fails
             {
-                Console.WriteLine("yes");
                 return View(fine); // returns the view with errors
             }
 
