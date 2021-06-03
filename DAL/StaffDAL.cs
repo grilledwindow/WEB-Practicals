@@ -245,8 +245,7 @@ public class StaffDAL
         conn.Open();
 
         cmd.CommandText = @"UPDATE Staff SET SupervisorID = NULL
-                            WHERE StaffID = @staffID
-                            AND StaffID = SupervisorID;
+                            WHERE SupervisorID = @staffID;
                             UPDATE Branch SET MgrID = NULL
                             WHERE MgrID = @staffID;
                             DELETE FROM StaffContact
