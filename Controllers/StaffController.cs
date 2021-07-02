@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Web_S10203108.Models;
 using Web_S10203108.DAL;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Web_S10203108.Controllers
 {
@@ -221,6 +223,59 @@ namespace Web_S10203108.Controllers
                 Photo = staff.Name + ".jpg"
             };
             return staffVM;
+        }
+
+        public ActionResult UploadPhoto(int id)
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Staff" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Staff"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Staff staff = staffContext.GetDetails(id);
+            StaffViewModel staffVM = MapToStaffVM(staff);
+            return View(staffVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPhoto(StaffViewModel staffVM)
+        {
+            if (staffVM.fileToUpload != null &&
+            staffVM.fileToUpload.Length > 0)
+            {
+                try
+                {
+                    // Find the filename extension of the file to be uploaded.
+                    string fileExt = Path.GetExtension(
+                    staffVM.fileToUpload.FileName);
+                    // Rename the uploaded file with the staff’s name.
+                    string uploadedFile = staffVM.Name + fileExt;
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot\\images", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                    savePath, FileMode.Create))
+                    {
+                        await staffVM.fileToUpload.CopyToAsync(fileSteam);
+                    }
+                    staffVM.Photo = uploadedFile;
+                    ViewData["Message"] = "File uploaded successfully.";
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["Message"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["Message"] = ex.Message;
+                }
+            }
+            return View(staffVM);
         }
     }
 }

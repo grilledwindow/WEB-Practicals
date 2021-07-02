@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Web_S10203108.Models
 {
@@ -22,5 +23,6 @@ namespace Web_S10203108.Models
         [Display(Name = "Branch")]
         public string BranchName { get; set; }
         public string Photo { get; set; }
+        public IFormFile fileToUpload { get; set; }
     }
 }
