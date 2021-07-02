@@ -176,5 +176,51 @@ namespace Web_S10203108.Controllers
             staffContext.Delete(staff.StaffId);
             return RedirectToAction("Index");
         }
+
+        // GET: StaffController/Details/5
+        public ActionResult Details(int id)
+        {
+            // Stop accessing the action if not logged in
+            // or account not in the "Staff" role
+            if ((HttpContext.Session.GetString("Role") == null) ||
+            (HttpContext.Session.GetString("Role") != "Staff"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Staff staff = staffContext.GetDetails(id);
+            StaffViewModel staffVM = MapToStaffVM(staff);
+            return View(staffVM);
+        }
+        public StaffViewModel MapToStaffVM(Staff staff)
+        {
+            string branchName = "";
+            if (staff.BranchNo != null)
+            {
+                List<Branch> branchList = branchContext.GetAllBranches();
+                foreach (Branch branch in branchList)
+                {
+                    if (branch.BranchNo == staff.BranchNo.Value)
+                    {
+                        branchName = branch.Address;
+                        //Exit the foreach loop once the name is found
+                        break;
+                    }
+                }
+            }
+            StaffViewModel staffVM = new StaffViewModel
+            {
+                StaffId = staff.StaffId,
+                Name = staff.Name,
+                Gender = staff.Gender,
+                DOB = staff.DOB,
+                Nationality = staff.Nationality,
+                Email = staff.Email,
+                Salary = staff.Salary,
+                Status = staff.IsFullTime ? "Full-Time" : "Part-Time",
+                BranchName = branchName,
+                Photo = staff.Name + ".jpg"
+            };
+            return staffVM;
+        }
     }
 }

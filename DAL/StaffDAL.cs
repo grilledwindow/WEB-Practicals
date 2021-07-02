@@ -11,6 +11,42 @@ public class StaffDAL
     private SqlConnection conn;
 
     // Constructor
+    // public class BookDAL
+    // {
+    //     private SqlConnection conn;
+
+    //     public List<Book> GetBooksBelowTargetPrice(double targetPrice)
+    //     {
+    //         SqlCommand cmd = conn.CreateCommand();
+
+    //         cmd.CommandText = @"SELECT * FROM Staff WHERE Price < @targetPrice";
+    //         cmd.Parameters.AddWithValue("@targetPrice", targetPrice);
+
+    //         conn.Open();
+    //         SqlDataReader reader = cmd.ExecuteReader();
+
+    //         List<Book> bookList = new List<Book>();
+    //         while (reader.Read())
+    //         {
+    //             bookList.Add(
+    //                 new Staff
+    //                 {
+    //                     BookId = reader.GetInt32(0),
+    //                     Isbn = reader.GetString(1),
+    //                     Title = reader.GetString(2),
+    //                     Author = reader.GetString(3),
+    //                     Price = reader.GetDecimal(4)
+    //                 }
+    //             );
+    //         }
+
+    //         reader.Close();
+    //         conn.Close();
+
+    //         return bookList;
+    //     }
+    // }
+
     public StaffDAL()
     {
         // Read ConnectionString from appsettings.json file
@@ -255,13 +291,13 @@ public class StaffDAL
         cmd.Parameters.AddWithValue("@staffID", staffId);
 
         int rowAffected = 0;
-       
+
         // Execute the DELETE SQL to remove the staff record
         rowAffected += cmd.ExecuteNonQuery();
-        
+
         // Close database connection
         conn.Close();
-        
+
         // Return number of row of staff record updated or deleted
         return rowAffected;
     }

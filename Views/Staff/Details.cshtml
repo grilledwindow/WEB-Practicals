@@ -1,0 +1,85 @@
+@model Web_S10203108.Models.StaffViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+<h4 class="PageTitle">View Staff Details</h4>
+<hr />
+<fieldset class="FormContent">
+    <div class="form-group row">
+        <label asp-for="StaffId" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("StaffId")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("Name")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Photo" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            <img src="~/images/@Model.Photo" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Gender" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            <div class="form-group form-check-inline">
+                <label class="col-form-label">
+                    <input asp-for="Gender" type="radio" value="M" class="form-check-input" disabled />
+                    <span style="font-weight:normal;
+padding-right:20px">Male</span>
+                </label>
+                <label class="col-form-label">
+                    <input asp-for="Gender" type="radio" value="F" class="form-check-input" disabled />
+                    <span style="font-weight:normal;
+padding-right:20px">Female</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="DOB" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("DOB")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Nationality" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("Nationality")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("Email")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Salary" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("Salary")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Status" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("Status")
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="BranchName" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.Display("BranchName")
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-9 offset-sm-3">
+            <a asp-action="Edit" asp-controller="Staff" asp-route-id="@Model.StaffId">Edit</a> |
+            <a asp-action="Index" asp-controller="Staff">Back to List</a>
+        </div>
+    </div>
+</fieldset>
