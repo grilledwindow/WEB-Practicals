@@ -11,14 +11,15 @@
 
 <body>
     <header>
-    @if (Context.Session.GetString("Role") != null)
-    {
-        if (Context.Session.GetString("Role") == "Staff")
+        @if (Context.Session.GetString("Role") == "Staff")
         {
             @await Html.PartialAsync("_StaffMenu.cshtml")
         }
-    }
- </header>
+        else
+        {
+            @await Html.PartialAsync("_StudentMenu.cshtml")
+        }
+    </header>
     <!-- Bootstrap container, centralise the container between margins -->
     <div class="container">
         <!-- 1st row -->
@@ -38,9 +39,9 @@
         </div>
         <!-- 2nd row -->
         <div class="row">
-            <div class="col-sm-12">
+            @* <div class="col-sm-12"> *@
                 @RenderBody()
-            </div>
+            @* </div> *@
         </div>
     </div>
     <footer class="border-top small text-right text-muted">

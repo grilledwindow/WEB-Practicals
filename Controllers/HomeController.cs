@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Web_S10203108.Models;
 
 namespace Web_S10203108.Controllers
@@ -61,6 +61,12 @@ namespace Web_S10203108.Controllers
             }
         }
 
+        public ActionResult StudentLogin()
+        {
+            HttpContext.Session.SetString("Role", "Student");
+            return RedirectToAction("Index", "Book");
+        }
+        
         public ActionResult LogOut()
         {
             DateTime loginTime = DateTime.Parse(HttpContext.Session.GetString("LoginTime").ToString());
