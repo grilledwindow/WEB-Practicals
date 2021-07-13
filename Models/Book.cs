@@ -16,5 +16,6 @@ namespace Web_S10203108.Models
         public int Pages { get; set; }
         [Display(Name = "Quantity Available")]
         public int Qty { get; set; }
+        public string Justification { get; set; }
     }
 }

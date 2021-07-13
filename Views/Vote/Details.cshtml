@@ -1,0 +1,53 @@
+@model IEnumerable<Web_S10203108.Models.VoteDetails>
+@{
+    ViewData["Title"] = "Vote Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model.ToList().Count > 0)
+{
+    <h2>Votes for @Model.First().Title</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Justification)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Justification)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
+<p>
+    <a asp-controller="Book" asp-action="Index">Back</a>
+</p>

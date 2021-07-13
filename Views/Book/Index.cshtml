@@ -16,6 +16,7 @@
                     <th>@Html.DisplayNameFor(model => model.Author)</th>
                     <th>@Html.DisplayNameFor(model => model.Pages)</th>
                     <th>@Html.DisplayNameFor(model => model.Qty)</th>
+                    <th>Justification</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,6 +29,34 @@
                         <td>@item.Author</td>
                         <td>@item.Pages</td>
                         <td>@item.Qty</td>
+                        <td>
+                            @{
+                                int rBookId;
+                                string rJustification = "", errorMsg = "";
+                                // An error for the row detected
+                                if (TempData["BookId"] != null)
+                                {
+                                    rBookId = Convert.ToInt32(TempData["BookId"]);
+                                    if (rBookId == item.Id)
+                                    {
+                                        rJustification = TempData["Justification"].ToString();
+                                        errorMsg = @TempData["Message"].ToString();
+                                    }
+                                }
+                            }
+                            <form asp-controller="Vote" asp-action="Create" method="post">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input asp-for="@item.Justification" value="@rJustification" />
+                                            <input type="hidden" asp-for="@item.Id" />
+                                            <input type="submit" value="Add" class="btn btn-primary" />
+                                            <span style="color:red;">@errorMsg</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

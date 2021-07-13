@@ -63,10 +63,13 @@ namespace Web_S10203108.Controllers
 
         public ActionResult StudentLogin()
         {
+            String loginTime = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss tt");
+            TempData["LoginTime"] = loginTime;
+            HttpContext.Session.SetString("LoginTime", loginTime);
             HttpContext.Session.SetString("Role", "Student");
             return RedirectToAction("Index", "Book");
         }
-        
+
         public ActionResult LogOut()
         {
             DateTime loginTime = DateTime.Parse(HttpContext.Session.GetString("LoginTime").ToString());
