@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Web_S10203108.Models;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Web_S10203108.Controllers
 {
@@ -42,9 +50,7 @@ namespace Web_S10203108.Controllers
 
             if (loginID == "abc@npbook.com" && password == "pass1234")
             {
-                String loginTime = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss tt");
-                TempData["LoginTime"] = loginTime;
-                HttpContext.Session.SetString("LoginTime", loginTime);
+                HttpContext.Session.SetString("LoginTime", DateTime.Now.ToString()); // dd-MMM-yy HH:mm:ss tt
                 HttpContext.Session.SetString("LoginID", loginID);
                 HttpContext.Session.SetString("Role", "Staff");
 
@@ -61,17 +67,37 @@ namespace Web_S10203108.Controllers
             }
         }
 
-        public ActionResult StudentLogin()
+        [Authorize]
+        public async Task<ActionResult> StudentLogin()
         {
-            String loginTime = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss tt");
-            TempData["LoginTime"] = loginTime;
-            HttpContext.Session.SetString("LoginTime", loginTime);
-            HttpContext.Session.SetString("Role", "Student");
-            return RedirectToAction("Index", "Book");
+            // The user is already authenticated, so this call won't
+            // trigger login, but it allows us to access token related values.
+            AuthenticateResult auth = await HttpContext.AuthenticateAsync();
+            string idToken = auth.Properties.GetTokenValue(OpenIdConnectParameterNames.IdToken);
+            try
+            {
+                // Verify the current user logging in with Google server
+                // if the ID is invalid, an exception is thrown
+                Payload currentUser = await
+                GoogleJsonWebSignature.ValidateAsync(idToken);
+                string userName = currentUser.Name;
+                string eMail = currentUser.Email;
+                HttpContext.Session.SetString("LoginID", userName + " / " + eMail);
+                HttpContext.Session.SetString("Role", "Student");
+                HttpContext.Session.SetString("LoginTime", DateTime.Now.ToString()); // dd-MMM-yy HH:mm:ss tt
+                return RedirectToAction("Index", "Book");
+            }
+            catch (Exception e)
+            {
+                // Token ID is may be tempered with, force user to logout
+                return RedirectToAction("LogOut");
+            }
         }
 
-        public ActionResult LogOut()
+        public async Task<ActionResult> LogOut()
         {
+            // Clear authentication cookie
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             DateTime loginTime = DateTime.Parse(HttpContext.Session.GetString("LoginTime").ToString());
 
             // Clear all key-values pairs stored in session state

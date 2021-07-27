@@ -1,13 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Web_S10203108
 {
@@ -34,6 +36,27 @@ namespace Web_S10203108
             });
 
             services.AddControllersWithViews();
+
+            // This configures Google.Apis.Auth.AspNetCore3 for use in this app.
+            services.AddAuthentication(options =>
+            {
+                // Login (Challenge) to be handled by Google OpenID Handler,
+                options.DefaultChallengeScheme =
+                GoogleOpenIdConnectDefaults.AuthenticationScheme;
+
+                // Once a user is authenticated, the OAuth2 token info
+                // is stored in cookies.
+                options.DefaultScheme =
+                CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogleOpenIdConnect(options =>
+            {
+                // Credentials (stored in appsettings.json) to identify
+                // the web app when performing Google authentication
+                options.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +75,7 @@ namespace Web_S10203108
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.UseEndpoints(endpoints =>
